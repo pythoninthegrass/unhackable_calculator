@@ -5,4 +5,4 @@ Pythonistas [Remote Code Execution Meetup](https://www.meetup.com/pythonistas/ev
 ## TODO
 * Dockerfile
 * Usage
-* Hack [Logan's Lambda box](https://app.cloud-logon.com/dev/calculator) (no DDoS plz)
+* Hack [sw33tr0ll](https://github.com/sw33tr0ll)'s [Lambda box](https://app.cloud-logon.com/dev/calculator) (no DDoS plz)
