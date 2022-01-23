@@ -45,7 +45,7 @@ Pythonistas [Remote Code Execution Meetup](https://www.meetup.com/pythonistas/ev
 * Rebuild outside of `docker-compose`
     ```bash
     # build
-    docker build --tag docker_python .
+    docker build --no-cache=true --network=host --tag docker_python .
 
     # tag as version other than latest
     docker tag <457e6d6c2d25> docker_python:v1.5
@@ -55,8 +55,8 @@ Pythonistas [Remote Code Execution Meetup](https://www.meetup.com/pythonistas/ev
 * Poetry
 * ~~Dockerfile~~
 * Playwright
-```bash
-# generate boilerplate code
-playwright codegen https://app.cloud-logon.com/dev/calculator
-```
+    ```bash
+    # generate boilerplate code
+    playwright codegen https://app.cloud-logon.com/dev/calculator
+    ```
 * Hack [sw33tr0ll](https://github.com/sw33tr0ll)'s [Lambda box](https://app.cloud-logon.com/dev/calculator) (no DDoS plz)
