@@ -16,8 +16,8 @@ Pythonistas [Remote Code Execution Meetup](https://www.meetup.com/pythonistas/ev
 curl -sSL https://install.python-poetry.org | $(which python3) -
 
 # Change config
-poetry config virtualenvs.in-project true		  # .venv in `pwd`
-poetry config experimental.new-installer false	  # fixes JSONDecodeError on Python3.10
+poetry config virtualenvs.in-project true          # .venv in `pwd`
+poetry config experimental.new-installer false     # fixes JSONDecodeError on Python3.10
 
 # Activate virtual environment (venv)
 poetry shell
