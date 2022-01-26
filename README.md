@@ -3,12 +3,49 @@
 Pythonistas [Remote Code Execution Meetup](https://www.meetup.com/pythonistas/events/283364790/) on January 22, 2022
 
 ## Setup
-* Install [docker-compose](https://docs.docker.com/compose/install/)
-* Install [poetry](https://python-poetry.org/docs/)
+* Install 
+    * [editorconfig](https://editorconfig.org/)
+    * [poetry](https://python-poetry.org/docs/)
+    * [docker-compose](https://docs.docker.com/compose/install/)
+    * [playwright](https://playwright.dev/python/docs/intro#installation)
 
 ## Usage
 ### Poetry
-`TODO`
+```bash
+# Install
+curl -sSL https://install.python-poetry.org | $(which python3) -
+
+# Change config
+poetry config virtualenvs.in-project true		  # .venv in `pwd`
+poetry config experimental.new-installer false	  # fixes JSONDecodeError on Python3.10
+
+# Activate virtual environment (venv)
+poetry shell
+
+# Deactivate venv
+exit  # ctrl-d
+
+# Install multiple libraries
+poetry add google-auth google-api-python-client
+
+# Initialize existing project
+poetry init
+
+# Run script and exit environment
+poetry run python your_script.py
+
+# Install from requirements.txt
+poetry add `cat requirements.txt`
+
+# Update dependencies
+poetry update
+
+# Remove library
+poetry remove google-auth
+
+# Generate requirements.txt
+poetry export -f requirements.txt --output requirements.txt --without-hashes
+```
 
 ### Docker
 ```bash
@@ -21,26 +58,36 @@ docker-compose up --remove-orphans -d
 # exec into container
 docker attach unhackable
 
+# run command inside container
+python unhackable.py
+
 # destroy container
 docker-compose down
 ```
 
-#### Troubleshooting
+#### Docker Troubleshooting
 * Watch logs in real-time: `docker-compose logs -tf --tail="50" unhackable`
 * Check exit code
     ```bash
     $ docker-compose ps
     Name                          Command               State    Ports
     ------------------------------------------------------------------------------
-    docker_python_dockerpython_1   python manage.py runserver ...   Exit 0
+    docker_python      python manage.py runserver ...   Exit 0
     ```
 
+### Playwright
+```bash
+# install
+pip install --upgrade pip
+pip install playwright
+playwright install
+
+# generate code via macro
+playwright codegen wikipedia.org
+```
+
 ## TODO
-* Poetry
+* ~~Poetry~~
 * ~~Dockerfile~~
-* Playwright
-    ```bash
-    # generate boilerplate code
-    playwright codegen https://app.cloud-logon.com/dev/calculator
-    ```
+* ~~Playwright~~
 * Hack [sw33tr0ll](https://github.com/sw33tr0ll)'s [Lambda box](https://app.cloud-logon.com/dev/calculator) (no DDoS plz)
