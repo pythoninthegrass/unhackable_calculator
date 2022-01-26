@@ -1,8 +1,11 @@
 version: "3.7"
 
 services:
-  dockerpython:
+  app:
+    container_name: unhackable
     image: docker_python
+    tty: true
+    stdin_open: true
     build:
       context: .
       dockerfile: ./Dockerfile

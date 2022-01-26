@@ -20,16 +20,17 @@ FROM ubuntu:20.04 AS builder-image
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
+    && apt-get install \
+    --no-install-recommends -y \
     software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa -y \
     && apt-get update \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get update \
-    && apt-get install --no-install-recommends -y \
-    python3 \
-    python3-pip \
-    python3-venv \
-    python3-wheel \
+    && apt-get install \
+    --no-install-recommends -y \
+    python3.10 \
+    python3.10-dev \
+    python3.10-venv \
+    python3.10-distutils \
     build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -40,23 +41,29 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Install pip requirements
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir wheel && pip3 install --no-cache-dir -r requirements.txt && \
-    find /usr/local/lib/python3.10 -name '*.c' -delete || echo "No leftover *.c files" && \
-    find /usr/local/lib/python3.10 -name '*.pxd' -delete || echo "No leftover *.pxd files" && \
-    find /usr/local/lib/python3.10 -name '*.pyd' -delete || echo "No leftover *pyd files" && \
-    find /usr/local/lib/python3.10 -name '__pycache__' | xargs rm -r || echo "__pycache__ is empty"
+RUN pip3 install --no-cache-dir wheel && pip3 install --no-cache-dir -r requirements.txt
 
 FROM ubuntu:20.04 AS runner-image
 
-RUN apt-get update && apt-get install --no-install-recommends -y python3 python3-venv && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install \
+    --no-install-recommends -y \
+    software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa -y \
+    && apt-get update \
+    && apt-get install \
+    --no-install-recommends -y \
+    python3.10 \
+    python3.10-venv \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN useradd --create-home appuser
 COPY --from=builder-image --chown=appuser:appuser /opt/venv /opt/venv
 
 RUN mkdir -p /home/appuser/app
 COPY --chown=appuser:appuser . /home/appuser/app
-WORKDIR /home/appuser/app/helloworld
+WORKDIR /home/appuser/app
 
 # In addition to chown above, sets user after files have been copied
 USER appuser
@@ -69,10 +76,10 @@ ENV PYTHONUNBUFFERED=1
 
 # activate virtual environment
 ENV VIRTUAL_ENV="/opt/venv"
-RUN python3 -m venv $VIRTUAL_ENV
+RUN python3.10 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # EXPOSE 8000
-# RUN python manage.py migrate
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-ENTRYPOINT ["/bin/bash"]
+
+# ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]
