@@ -3,7 +3,7 @@ import re
 import requests
 from bs4 import BeautifulSoup, Comment
 from datetime import timedelta
-from icecream import ic
+# from icecream import ic
 from pathlib import Path
 from requests_cache import CachedSession
 
@@ -41,4 +41,4 @@ print(f"AWS ACCOUNT NUMBER: {aws_account_number}")
 hint_page = requests.get(hint_url)
 hint_page_soup = BeautifulSoup(hint_page.text, 'html.parser')
 print(f"\nHINT PAGE\n{hint_page_soup}")
-ic(hint_page.text)
+print(hint_page.text)
